@@ -1,2 +1,1 @@
-Flask==2.2.2 # Or a recent stable version
-# Add prometheus-flask-exporter and stock fetching libraries later
+Flask

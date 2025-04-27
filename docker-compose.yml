@@ -1,0 +1,33 @@
+version: '3.8' # Specify the Docker Compose file format version
+
+services:
+  stock-api:
+    build: ./api # Build the image using the Dockerfile in the ./api directory
+    ports:
+      - "8000:8000" # Map host port 8000 to container port 8000
+    # volumes: # <-- Comment out this line to fix the validation error
+      # Optional: Mount the API code for easier local development (changes reflect without rebuilding)
+      # - ./api:/app
+    # environment: # Define environment variables if needed
+      # FLASK_ENV: development
+      # Any API keys or configuration could go here
+
+  stock-ui:
+    build: ./ui # Build the image using the Dockerfile in the ./ui directory
+    ports:
+      - "3002:80" # Map host port 3000 to container port 80 (Nginx default)
+    volumes:
+      # Mount the UI code for hot-reloading during development (if configured in UI)
+      # Note: This can sometimes be tricky with Node.js dependencies
+      - ./ui:/app
+      # Create a named volume specifically for node_modules
+      # This prevents the host's node_modules from overwriting the container's
+      - ui_node_modules:/app/node_modules
+    depends_on:
+      - stock-api # Ensure the API container starts before the UI (optional but good practice)
+    # environment: # Define environment variables if needed
+      # API_URL: http://stock-api:8000 # Example: Point UI to the API service name in Docker network
+
+
+volumes:
+  ui_node_modules: # Define the named volume for UI node_modules
