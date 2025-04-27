@@ -1,0 +1,24 @@
+# To get started with Dependabot version updates, you'll need to specify which
+# package ecosystems to update and where the package manifests are located.
+# Please see the documentation for all configuration options:
+# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+
+version: 2
+updates:
+  # Configuration for Python dependencies
+  - package-ecosystem: "pip" # Use pip for Python dependencies
+    directory: "/api/" # Look for requirements.txt in the api/ directory
+    schedule:
+      interval: "weekly" # Check for updates weekly
+    # Optionally, specify a time and timezone
+    # time: "04:00" # 04:00 UTC
+    # timezone: "Asia/Kolkata" # Specify your timezone if needed
+
+  # Configuration for Node.js dependencies
+  - package-ecosystem: "npm" # Use npm for Node.js dependencies (React UI)
+    directory: "/ui/" # Look for package.json in the ui/ directory
+    schedule:
+      interval: "weekly" # Check for updates weekly
+    # Optionally, specify a time and timezone
+    # time: "04:00" # 04:00 UTC
+    # timezone: "Asia/Kolkata" # Specify your timezone if needed

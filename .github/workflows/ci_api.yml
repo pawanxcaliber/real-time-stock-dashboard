@@ -1,0 +1,43 @@
+name: CI - Stock API
+
+on:
+  push:
+    branches:
+      - main
+    paths: # Only run this workflow if files in the api/ directory change
+      - 'api/**'
+      - '.github/workflows/ci_api.yml' # Also run if the workflow file changes
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'api/**'
+      - '.github/workflows/ci_api.yml'
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x' # Use a recent Python version
+
+    - name: Install dependencies
+      working-directory: ./api # Run commands from the api directory
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8 pytest -r requirements.txt # Install test and lint tools
+
+    - name: Run Flake8 linter
+      working-directory: ./api
+      run: flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics --exclude venv # Add exclude venv here too
+
+    - name: Run Pytest tests # You'll add actual tests later
+      working-directory: ./api
+      run: pytest # This will run any tests found in your api directory
+      # For now, it might just report no tests found, which is fine.
