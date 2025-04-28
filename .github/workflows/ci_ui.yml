@@ -2,22 +2,19 @@ name: CI - Stock UI
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
     paths:
       - 'ui/**'
       - '.github/workflows/ci_ui.yml'
   pull_request:
-    branches:
-      - main
+    branches: [ main ]
     paths:
       - 'ui/**'
       - '.github/workflows/ci_ui.yml'
 
 jobs:
-  lint-and-test:
+  lint-test-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -31,13 +28,17 @@ jobs:
         working-directory: ./ui
         run: npm ci
 
-      - name: Run ESLint linter
+      - name: Run ESLint
         working-directory: ./ui
         run: npm run lint
 
-      # - name: Run React tests
-      #   working-directory: ./ui
-      #   run: npm test -- --watchAll=false
+      - name: Build production bundle
+        working-directory: ./ui
+        run: npm run build
+
+      - name: List files in dist (debug)
+        working-directory: ./ui
+        run: ls -R dist
 
       - name: Deploy to GitHub Pages
         if: github.ref == 'refs/heads/main'
