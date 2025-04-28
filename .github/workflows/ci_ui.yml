@@ -39,12 +39,13 @@ jobs:
     #  working-directory: ./ui
       # run: npm test -- --watchAll=false # Run tests, exit after completion
 
-    - name: Deploy to GitHub Pages # <--- ADDED THIS DEPLOYMENT STEP
-      if: github.ref == 'refs/heads/main' # Only deploy on pushes to main branch
-      uses: peaceiris/actions-gh-pages@v3 # Use a popular GitHub Pages deploy action
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }} # GitHub automatically provides this token
-        publish_dir: dist # Directory containing the built static files (adjust if not 'dist')
-        publish_branch: gh-pages # <--- Explicitly state the target branch
-        force_orphan: true # <--- Useful for ensuring a clean deploy history
-      working-directory: ./ui # <--- Add this line
+    - name: Deploy to GitHub Pages # <--- This is a step definition (starts with -)
+      if: github.ref == 'refs/heads/main' # <--- Step-level key (aligned with name, uses, etc.)
+      uses: peaceiris/actions-gh-pages@v3 # <--- Step-level key (aligned with name, if, etc.)
+      with: # <--- Parameters for the 'uses' action (indented further)
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: dist
+        publish_branch: gh-pages
+        force_orphan: true
+        # cname: example.com
+      working-directory: ./ui # <--- CORRECT INDENTATION: Step-level key (aligned with uses:, if:)
