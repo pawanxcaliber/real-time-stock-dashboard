@@ -39,14 +39,14 @@ jobs:
     #  working-directory: ./ui
       # run: npm test -- --watchAll=false # Run tests, exit after completion
 
-    - name: Deploy to GitHub Pages # <--- This is a step definition
-      if: github.ref == 'refs/heads/main' # <--- Step-level key
-      uses: peaceiris/actions-gh-pages@v3 # <--- Step-level key
-      with: # <--- Parameters for the 'uses' action
+    - name: Deploy to GitHub Pages
+      if: github.ref == 'refs/heads/main'
+      uses: peaceiris/actions-gh-pages@v3
+      with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: dist # Directory containing the built static files (adjust if not 'dist')
-        publish_branch: gh-pages # <--- Explicitly state the target branch
-        force_orphan: true # <--- Useful for ensuring a clean deploy history
+        publish_dir: dist
+        publish_branch: gh-pages
+        force_orphan: true
         # Optional: Add a CNAME if you have a custom domain
         # cname: example.com
-      working-directory: ./ui # <--- Step-level key (ALIGNED WITH 'uses:' and 'if:')
+      working-directory: ./ui
