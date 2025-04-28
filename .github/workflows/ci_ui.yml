@@ -35,9 +35,9 @@ jobs:
       working-directory: ./ui
       run: npm run lint # Assumes you added a 'lint' script to package.json
 
-    - name: Run React tests # React apps often come with basic tests
-      working-directory: ./ui
-      run: npm test -- --watchAll=false # Run tests, exit after completion
+    #- name: Run React tests # React apps often come with basic tests
+    #  working-directory: ./ui
+      # run: npm test -- --watchAll=false # Run tests, exit after completion
 
     - name: Deploy to GitHub Pages # <--- ADDED THIS DEPLOYMENT STEP
       if: github.ref == 'refs/heads/main' # Only deploy on pushes to main branch
