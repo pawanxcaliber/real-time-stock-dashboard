@@ -37,7 +37,12 @@ jobs:
       working-directory: ./api
       run: flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics --exclude venv # Add exclude venv here too
 
-    - name: Run Pytest tests # You'll add actual tests later
+    - name: Run Pytest tests
       working-directory: ./api
-      run: pytest # This will run any tests found in your api directory
-      # For now, it might just report no tests found, which is fine.
+      run: pytest
+
+    - name: Trigger Render Deployment # <--- Add this new step
+      if: github.ref == 'refs/heads/main' # Only deploy on pushes to main branch
+      env:
+        RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_API_DEPLOY_HOOK_URL }} # Access the secret
+      run: curl "$RENDER_DEPLOY_HOOK_URL" # Use curl to hit the deploy hook URL

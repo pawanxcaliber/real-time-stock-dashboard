@@ -29,7 +29,7 @@ jobs:
 
     - name: Install dependencies
       working-directory: ./ui # Run commands from the ui directory
-      run: npm ci # 'npm ci' is preferred over 'npm install' in CI environments
+      run: npm ci # 'npm ci' is preferred for clean installs in CI environments
 
     - name: Run ESLint linter
       working-directory: ./ui
@@ -38,3 +38,12 @@ jobs:
     - name: Run React tests # React apps often come with basic tests
       working-directory: ./ui
       run: npm test -- --watchAll=false # Run tests, exit after completion
+
+    - name: Deploy to GitHub Pages # <--- ADDED THIS DEPLOYMENT STEP
+      if: github.ref == 'refs/heads/main' # Only deploy on pushes to main branch
+      uses: peaceiris/actions-gh-pages@v3 # Use a popular GitHub Pages deploy action
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }} # GitHub automatically provides this token
+        publish_dir: ./ui/dist # Directory containing the built static files (adjust if not 'dist')
+        # Optional: Add a CNAME if you have a custom domain
+        # cname: example.com
