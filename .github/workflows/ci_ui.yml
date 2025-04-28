@@ -1,0 +1,40 @@
+name: CI - Stock UI
+
+on:
+  push:
+    branches:
+      - main
+    paths: # Only run this workflow if files in the ui/ directory change
+      - 'ui/**'
+      - '.github/workflows/ci_ui.yml' # Also run if the workflow file changes
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'ui/**'
+      - '.github/workflows/ci_ui.yml'
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20' # Or a recent LTS version
+
+    - name: Install dependencies
+      working-directory: ./ui # Run commands from the ui directory
+      run: npm ci # 'npm ci' is preferred over 'npm install' in CI environments
+
+    - name: Run ESLint linter
+      working-directory: ./ui
+      run: npm run lint # Assumes you added a 'lint' script to package.json
+
+    - name: Run React tests # React apps often come with basic tests
+      working-directory: ./ui
+      run: npm test -- --watchAll=false # Run tests, exit after completion
