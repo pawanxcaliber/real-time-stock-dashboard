@@ -4,9 +4,9 @@ on:
   push:
     branches:
       - main
-    paths: # Only run this workflow if files in the ui/ directory change
+    paths:
       - 'ui/**'
-      - '.github/workflows/ci_ui.yml' # Also run if the workflow file changes
+      - '.github/workflows/ci_ui.yml'
   pull_request:
     branches:
       - main
@@ -19,33 +19,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20' # Or a recent LTS version
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
-    - name: Install dependencies
-      working-directory: ./ui # Run commands from the ui directory
-      run: npm ci # 'npm ci' is preferred for clean installs in CI environments
+      - name: Install dependencies
+        working-directory: ./ui
+        run: npm ci
 
-    - name: Run ESLint linter
-      working-directory: ./ui
-      run: npm run lint # Assumes you added a 'lint' script to package.json
+      - name: Run ESLint linter
+        working-directory: ./ui
+        run: npm run lint
 
-    #- name: Run React tests # React apps often come with basic tests
-    #  working-directory: ./ui
-      # run: npm test -- --watchAll=false # Run tests, exit after completion
+      # - name: Run React tests
+      #   working-directory: ./ui
+      #   run: npm test -- --watchAll=false
 
-    - name: Deploy to GitHub Pages
-      if: github.ref == 'refs/heads/main'
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: dist
-        publish_branch: gh-pages
-        force_orphan: true
-      working-directory: ./ui
-     
+      - name: Deploy to GitHub Pages
+        if: github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./ui/dist
+          publish_branch: gh-pages
+          force_orphan: true
