@@ -42,12 +42,10 @@ jobs:
     - name: Deploy to GitHub Pages
       if: github.ref == 'refs/heads/main'
       uses: peaceiris/actions-gh-pages@v3
-      working-directory: ./ui
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: dist
         publish_branch: gh-pages
         force_orphan: true
-        # Optional: Add a CNAME if you have a custom domain
-        # cname: example.com
+      working-directory: ./ui
      
