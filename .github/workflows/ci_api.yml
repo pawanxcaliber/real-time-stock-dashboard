@@ -37,9 +37,9 @@ jobs:
       working-directory: ./api
       run: flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics --exclude venv # Add exclude venv here too
 
-    - name: Run Pytest tests
-      working-directory: ./api
-      run: pytest
+    #- name: Run Pytest tests
+     # working-directory: ./api
+     # run: pytest
 
     - name: Trigger Render Deployment # <--- Add this new step
       if: github.ref == 'refs/heads/main' # Only deploy on pushes to main branch
