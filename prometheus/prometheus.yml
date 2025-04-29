@@ -1,0 +1,13 @@
+global:
+  scrape_interval: 15s # How often to scrape targets
+
+scrape_configs:
+  - job_name: 'prometheus' # Job to scrape Prometheus itself
+    static_configs:
+      - targets: ['localhost:9090'] # Prometheus scrapes its own metrics endpoint
+
+  - job_name: 'stock-api' # Job to scrape your API
+    # This assumes your API will expose metrics on port 8000 at the /metrics path
+    # When running in Docker Compose on the same network, use the service name as hostname
+    static_configs:
+      - targets: ['stock-api:8000'] # Use the Docker Compose service name and port
